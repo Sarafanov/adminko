@@ -1,2 +1,2 @@
 # adminko
-Administration tool for manage shop products
+Административная утилита для управления каталогом продуктов магазина.
