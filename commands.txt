@@ -1,0 +1,11 @@
+sudo pip install virtualenv
+mkdir PROG
+cd RROG
+sudo add-apt-repository ppa:git-core/ppa
+sudo apt-get update
+sudo apt-get install git
+git clone http://github.com/Sarafanov/adminko.git
+cd adminko
+git status
+git checkout -b adminko-dev
+git push
