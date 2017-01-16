@@ -7,5 +7,11 @@ sudo apt-get install git
 git clone http://github.com/Sarafanov/adminko.git
 cd adminko
 git status
-git checkout -b adminko-dev
+git checkout adminko-dev
 git push
+
+git pull origin master
+# какая-то хреноблудь тут творится
+. .venv/bin/activate
+#sudo apt-get install libpq-dev python-dev
+pip install psycopg2
