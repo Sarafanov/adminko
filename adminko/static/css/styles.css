@@ -1,0 +1,20 @@
+.page-header {
+    background-color: #456789;
+    color: #fff;    
+    padding: 5px 0 5px 20px;
+    margin: 0;
+    border-bottom: none;
+}
+
+.page-header h1 {
+    display: inline;
+}
+
+.user-panel {
+    float: right;
+    padding: 5px 15px 0;
+}
+
+.user-panel > span {
+    padding-right: 10px;
+}
