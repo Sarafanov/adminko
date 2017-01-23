@@ -1,25 +1,352 @@
 {% extends "layout.html" %}
 
-{% block head %}
-    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
-{% endblock head %}
-
-{% block body %}
-
-    <!-- Header toolbar -->
-    <div class="page-header">
-        <h1>@dminko</h1>
-        <div class="user-panel">
-            <span>{{ username }}</span>
-            <a type="button" class="btn btn-default btn-sm" href="{{ url_for('logout') }}" title="Log out">
-                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
-            </a>
-        </div>                
+{% block body %}    
+    <div class="cnt-menu">
+        <div class="cnt-menu-header">
+            <span>Каталог товаров:</span>
+        </div>
+        <div class="cnt-menu-cnt">
+            <nav>
+                <a href="#">Стиральные машины</a>
+                <a href="#">Категория 2</a>
+                <a href="#">Категория 3</a>
+                <a href="#">Категория 4</a>
+                <a href="#">Категория 5</a>
+                <a href="#">Категория 6</a>
+                <a href="#">Категория 7</a>
+            </nav>                
+        </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-9"></div>
-    </div>
-
+    <div class="cnt-main">
+        <div class="cnt-main-header">
+            <div class="new-product">
+                <a href="{{ url_for('product') }}" title="Новый продукт">
+                    <img src="{{ url_for('static', filename='icons/new.png') }}" />
+                </a>                    
+            </div>
+            <div class="view-selector">
+                <a href="#" title="Представление: сетка">
+                    <img src="{{ url_for('static', filename='icons/vgrid.png') }}" />
+                </a>
+                <a href="#" title="Представление: таблица">
+                    <img src="{{ url_for('static', filename='icons/vlist.png') }}" />
+                </a>
+            </div>
+            <form class="search-panel">
+                <div><input type="text" placeholder="Поиск"></div>
+                <a href="/" type="submit" title="Go"></a>
+            </form> 
+        </div>
+        <div class="cnt-main-row">
+            <div class="product-box">                
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="{{ url_for('static', filename='icons/edit.png') }}">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="{{ url_for('static', filename='icons/remove.png') }}">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id1719049514631772443.jpg" alt="Bosch WLG 20060"/>
+                <div class="product-dsc">
+                    <a href="#" title="Bosch WLG 20060">
+                        <span>Bosch WLG 20060</span>
+                    </a>                        
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-238690</dd>
+                        <dt>Цена:</dt>
+                        <dd>17 000</dd>
+                    </dl>
+                </div>                    
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id8295672667630057583.jpg" alt="Indesit IWUB 4085" />
+                <div class="product-dsc">
+                    <a href="#" title="Indesit IWUB 4085">
+                        <span>Indesit IWUB 4085</span>
+                    </a>                        
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-235617</dd>
+                        <dt>Цена:</dt>
+                        <dd>11 155</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id1133755986572294786.jpg" alt="LG F-1096ND3" />
+                <div class="product-dsc">
+                    <a href="#" title="LG F-1096ND3">
+                        <span>LG F-1096ND3</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-231037</dd>
+                        <dt>Цена:</dt>
+                        <dd>21 670</dd>
+                    </dl>
+                </div>
+            </div>                
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id171041782629848098.jpg" alt="Indesit IWUC 4105" />
+                <div class="product-dsc">
+                    <a href="#" title="Indesit IWUC 4105">
+                        <span>Indesit IWUC 4105</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-251605</dd>
+                        <dt>Цена:</dt>
+                        <dd>11 290</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id6218837362984474504.jpg" alt="Hotpoint-Ariston VMSL 501" />
+                <div class="product-dsc">
+                    <a href="#" title="Hotpoint-Ariston VMSL 501">
+                        <span>Hotpoint-Ariston VMSL 501</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-247727</dd>
+                        <dt>Цена:</dt>
+                        <dd>12 999</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id5834981489492885637.jpg" alt="Siemens WS 10G160" />
+                <div class="product-dsc">
+                    <a href="#" title="Siemens WS 10G160">
+                        <span>Siemens WS 10G160</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-251605</dd>
+                        <dt>Цена:</dt>
+                        <dd>20 447</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id4980519378066581786.jpg" alt="Bosch WLG 20160" />
+                <div class="product-dsc">
+                    <a href="#" title="Bosch WLG 20160">
+                        <span>Bosch WLG 20160</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-239574</dd>
+                        <dt>Цена:</dt>
+                        <dd>19 300</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id2776290676103037647.jpg" alt="Bosch WLG 20061" />
+                <div class="product-dsc">
+                    <a href="#" title="Bosch WLG 20061">
+                        <span>Bosch WLG 20061</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-234780</dd>
+                        <dt>Цена:</dt>
+                        <dd>17 770</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id2303844864295925468.jpg" alt="LG F-10B8MD" />
+                <div class="product-dsc">
+                    <a href="#" title="LG F-10B8MD">
+                        <span>LG F-10B8MD</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-271422</dd>
+                        <dt>Цена:</dt>
+                        <dd>19 892</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id6274013616321707570.jpg" alt="Candy GC4 1051 D" />
+                <div class="product-dsc">
+                    <a href="#" title="Candy GC4 1051 D">
+                        <span>Candy GC4 1051 D</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-271521</dd>
+                        <dt>Цена:</dt>
+                        <dd>12764</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id5060191614024161702.jpg" alt="Asko W6984 W" />
+                <div class="product-dsc">
+                    <a href="#" title="Indesit IWUC 4105">
+                        <span>Indesit IWUC 4105</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-234512</dd>
+                        <dt>Цена:</dt>
+                        <dd>98 570</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id5901063769297499165.jpg" alt="LG F-1296ND4" />
+                <div class="product-dsc">
+                    <a href="#" title="LG F-1296ND4">
+                        <span>LG F-1296ND4</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-231699</dd>
+                        <dt>Цена:</dt>
+                        <dd>23 085</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id1810140280196787509.jpg" alt="LG F-12B8QD5" />
+                <div class="product-dsc">
+                    <a href="#" title="LG F-12B8QD5">
+                        <span>LG F-12B8QD5</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-242642</dd>
+                        <dt>Цена:</dt>
+                        <dd>22 197</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="product-box">
+                <div class="product-box-toolbar">
+                    <a href="#" title="Редактировать">
+                        <img src="/icons/edit.png">
+                    </a>
+                    <a href="#" title="Удалить">
+                        <img src="/icons/remove.png">
+                    </a>
+                </div>
+                <img class="product-img" src="/images/id918810919855937918.jpg" alt="Candy Aquamatic 1D835-07" />
+                <div class="product-dsc">
+                    <a href="#" title="Candy Aquamatic 1D835-07">
+                        <span>Indesit IWUC 4105</span>
+                    </a>
+                    <dl>
+                        <dt>Артикул: </dt>
+                        <dd>AL-253085</dd>
+                        <dt>Цена:</dt>
+                        <dd>15 741</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div> <!-- cnt-main -->        
 {% endblock body %}

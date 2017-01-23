@@ -1,25 +1,18 @@
-from flask import Flask, redirect, url_for, request, render_template, session
-app = Flask(__name__)
-
-app.secret_key = '\x9a\xf7G\xa3K\xb2\xe3\xd3\xd3@\xd7\xf9\xdddi\xde\xb3\xbbK\xcab\x8d\x85\\'
-
-app.config.update(
-    DEBUG=True,
-    username='login',
-    password='password'
-)
+from flask import redirect, url_for, request, render_template, session
+from adminko import app
+from adminko.models import User
 
 
 def valid_login(username, password):
     """
         Check user credentials. And if ok, store user info into session object.
     """
+    user = User.query.filter_by(username=username).first()
     #!!! stuff code!!!
-    auth_success = app.config.get(
-        'username') and password == app.config.get('password')
+    auth_success = user and username == password
     if auth_success:
-        session['userid'] = 12345
-        session['username'] = username
+        session['userid'] = user.id
+        session['username'] = user.username
     return auth_success
 
 
@@ -52,5 +45,10 @@ def index():
     return redirect(url_for('login'))
 
 
-if __name__ == "__main__":
-    app.run()
+@app.route('/product/new')
+@app.route('/product/<productid>')
+def product(productid=None):
+    if request.method == 'POST':
+        # create product or edit existing product info
+        return redirect(url_for('index'))
+    return render_template('product.html')
