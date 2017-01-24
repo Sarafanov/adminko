@@ -19,10 +19,16 @@
         <h2 id="doggy">@</h2>
         <h2>dminko</h2> 
         <div class="user-panel">
-            <span class="user-title">{{ username }}</span>
-            <a href="{{ url_for('logout') }}" title="Log out">
-                <img src="{{ url_for('static', filename='icons/logout.png') }}" title="logout" /></a>
-        </div>               
+        {% if user.isAdmin %}
+            <a class="user-panel-settings" href=# title="Settings">
+                <img src="{{ url_for('static', filename='icons/settings.png') }}" title="Settings" />
+            </a>
+        {% endif %}
+            <span class="user-panel-title">{{ user.name }}</span>
+            <a class="user-panel-logout" href="{{ url_for('logout') }}" title="Log out">
+                <img src="{{ url_for('static', filename='icons/logout.png') }}" title="logout" />
+            </a>
+        </div>                       
     </div>
 
     <div class="cnt">

@@ -17,3 +17,4 @@ git pull origin master
 pip install psycopg2
 
 sudo -u postgres createdb adminko
+sudo -u postgres dropdb adminko

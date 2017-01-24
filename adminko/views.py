@@ -3,16 +3,25 @@ from adminko import app
 from adminko.models import User
 
 
+def get_user():
+    """
+        Return User object for current session
+    """
+    if 'userid' not in session:
+        return
+    user = None
+    user = User.query.get(session['userid'])
+    return user
+
+
 def valid_login(username, password):
     """
-        Check user credentials. And if ok, store user info into session object.
+        Check user credentials. And if ok, store user id into session object.
     """
-    user = User.query.filter_by(username=username).first()
-    #!!! stuff code!!!
+    user = User.query.filter_by(name=username).first()
     auth_success = user and username == password
     if auth_success:
         session['userid'] = user.id
-        session['username'] = user.username
     return auth_success
 
 
@@ -33,15 +42,15 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('userid', None)
-    session.pop('username', None)
     return redirect(url_for('index'))
 
 
 @app.route('/')
 def index():
+    user = get_user()
     # if user already logged in
-    if 'username' in session:
-        return render_template('index.html', username=session['username'])
+    if user:
+        return render_template('index.html', user=user)
     return redirect(url_for('login'))
 
 
