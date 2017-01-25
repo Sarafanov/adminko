@@ -9,8 +9,9 @@ html {
 body {
 	height: 100%;
 	margin: 0;	
-	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;	
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 	min-width: 570px;
+	overflow-y: scroll;
 }
 
 a:focus, input:focus {
@@ -19,7 +20,7 @@ a:focus, input:focus {
 
 .header {
 	padding: 10px 0;	
-	border-bottom: 1px solid #563d7c;
+	border-bottom: 1px solid #4c3372;
 	margin-bottom: 30px;
 }
 
@@ -74,11 +75,13 @@ a:focus, input:focus {
 
 .cnt {
   margin: 0 auto;
+  min-height: 700px;
 }
 
 .cnt-menu {
-	float: left;		
+	float: left;
 	min-width: 250px;
+	max-width: 400px;
 }
 
 .cnt-menu-header {
@@ -95,6 +98,17 @@ a:focus, input:focus {
 
 .cnt-menu-cnt {
 	padding-left: 20px;
+}
+
+.cnt-menu-cnt > p {
+	border: 1px solid #4c3372;
+	border-radius: 3px;
+	padding: 4px;	
+	text-align: center;
+	font-size: 0.9em;
+	color: #4c3372;
+	background-color: rgba(255, 255, 0, 0.1);
+
 }
 
 .cnt-menu-cnt > nav > a {	
@@ -363,6 +377,8 @@ a:focus, input:focus {
 	padding: 30px 0 10px 0;
 	text-align: center;
 	font-size: 0.8em;
+	color: #fff;
+	background-color: #4c3372;
 }
 
 .product-info {

@@ -3,28 +3,35 @@
 {% block body %}    
     <div class="cnt-menu">
         <div class="cnt-menu-header">
-            <span>Каталог товаров:</span>
+            <span>Каталог товаров:</span>            
         </div>
         <div class="cnt-menu-cnt">
+        {% if user.categories.count() %}                        
             <nav>
                 {% for category in user.categories %}                
-                    {% if category.id == categoryId %}
+                    {% if category.id == categoryId %}                        
                         <a class="active" href="{{ url_for('index', categoryId=category.id) }}">{{ category.name }}</a>
                     {% else %}
                         <a href="{{ url_for('index', categoryId=category.id) }}">{{ category.name }}</a>
                     {% endif %}
                 {% endfor %}
-            </nav>                
+            </nav>
+        {% else %}
+            <p>Здесь пусто, поскольку, за Вами еще не закреплено ни одной категории товара.
+                <br>Пожалуйста, обратитесь за помощью к администратору.</p>
+        {% endif %}
         </div>
     </div>
 
     <div class="cnt-main">
+        {% if user.categories.count() %}
         <div class="cnt-main-header">
             <div class="new-product">
                 <a href="{{ url_for('product') }}" title="Новый продукт">
                     <img src="{{ url_for('static', filename='icons/new.png') }}" />
-                </a>                    
+                </a>           
             </div>
+            {% if user.categories.filter_by(id=categoryId).first().products.count() %}
             <div class="view-selector">
                 <a href="#" title="Представление: сетка">
                     <img src="{{ url_for('static', filename='icons/vgrid.png') }}" />
@@ -36,7 +43,8 @@
             <form class="search-panel">
                 <div><input type="text" placeholder="Поиск"></div>
                 <a href="/" type="submit" title="Go"></a>
-            </form> 
+            </form>
+            {% endif %}
         </div>
         <div class="cnt-main-row">
             {% for product in user.categories.filter_by(id=categoryId).first().products %}                        
@@ -58,11 +66,12 @@
                             <dt>Артикул: </dt>
                             <dd>{{ product.articul }}</dd>
                             <dt>Цена:</dt>
-                            <dd>{{ product.price }}</dd>
+                            <dd>{{ product.price }} руб.</dd>
                         </dl>
-                    </div>                    
+                    </div>
                 </div>
             {% endfor %}            
         </div>
+        {% endif %}
     </div> <!-- cnt-main -->        
 {% endblock body %}

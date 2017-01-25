@@ -26,10 +26,10 @@ def get_categoryid():
     if user:
         categoryId = session.get('categoryId')
         if not categoryId:
-            categoryId = user.categories.first().id
-            session['categoryId'] = categoryId
-        return categoryId
-    return None
+            if user.categories.count():
+                categoryId = user.categories.first().id
+                session['categoryId'] = categoryId
+        return int(categoryId)
 
 
 def set_categoryid(categoryId):
