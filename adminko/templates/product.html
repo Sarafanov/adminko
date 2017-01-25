@@ -3,20 +3,20 @@
 {% block body %}
     <form class="product-info" action="#" method="POST">
         <span class="product-info-cat">Категория: Стиральные машины</span>
-        <img src="/images/id1719049514631772443.jpg" alt="Изображение продукта" />
+        <img src="{{ url_for('static', filename='images/' + product.imageid + '.jpg') }}" alt="{{ product.name }}" />
         <dl>
             <dt>Наименование</dt>
-            <dd><input type="text" name="name" title="Наименование" placeholder="Bosch WLG 20060" /></dd>
+            <dd><input type="text" name="name" title="Наименование" value="{{ product.name }}" /></dd>
             <dt>Артикул</dt>
-            <dd><input type="text" name="articul" title="Артикул" placeholder="AL-238690" /></dd>
+            <dd><input type="text" name="articul" title="Артикул" value="{{ product.articul }}" /></dd>
             <dt>Цена</dt>
-            <dd><input type="text" name="price" title="Цена" placeholder="17 000" /></dd>
+            <dd><input type="text" name="price" title="Цена" value="{{ product.price }}" /></dd>
             <dt>Описание</dt>
-            <dd><textarea rows="5" cols="50" title="Описание"></textarea></dd>
+            <dd><textarea rows="5" cols="50" title="Описание">{{ product.description }}</textarea></dd>
         </dl>
         <div class="product-info-btn">
             <button type="submit"  title="Сохранить">Сохранить</button>
-            <button title="Отмена">Отмена</button>
+            <a href="{{ url_for('index') }}">Отмена</a>
         </div>
     </form>
 {% endblock body %}

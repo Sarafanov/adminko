@@ -113,7 +113,7 @@ a:focus, input:focus {
 	color: #4c3372;
 }
 
-.cnt-menu-cnt > nav > a:focus {
+.cnt-menu-cnt > nav > a.active {
 	font-weight: bold;
 	color: #4c3372;
 	border-left: 1px solid #4c3372;
