@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <div class="header">
+    <header class="header">
         <h2 id="doggy">@</h2>
         <h2>dminko</h2> 
         <div class="user-panel">
@@ -24,20 +24,20 @@
                 <img src="{{ url_for('static', filename='icons/settings.png') }}" title="Settings" />
             </a>
         {% endif %}
-            <span class="user-panel-title">{{ user.name }}</span>
-            <a class="user-panel-logout" href="{{ url_for('logout') }}" title="Log out">
-                <img src="{{ url_for('static', filename='icons/logout.png') }}" title="logout" />
+            <span class="user-panel-title" title="Удачного дня!">{{ user.name }}</span>
+            <a class="user-panel-logout" href="{{ url_for('logout') }}" title="Выход">
+                <img src="{{ url_for('static', filename='icons/logout.png') }}" title="Выход" />
             </a>
         </div>                       
-    </div>
+    </header>
 
     <div class="cnt">
         {% block body %} {% endblock %}
     </div>
 
-    <div class="footer">        
-        <span>I.Sarafanov, 2017</span>
-    </div>
+    <footer class="footer">        
+        <span>Ivan Sarafanov, 2017</span>
+    </footer>
 </body>
 
 </html>
