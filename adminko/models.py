@@ -1,6 +1,27 @@
 from adminko import db
 
 
+managers = db.Table('managers',
+                    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+                    db.Column('category_id', db.Integer,
+                              db.ForeignKey('category.id'))
+                    )
+
+
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    managers = db.relationship('User', secondary=managers,
+                               backref=db.backref('categories', lazy='dynamic'))
+    products = db.relationship('Product', backref='category', lazy='dynamic')
+
+    def __init__(self, name):
+        self.name = name
+
+    def __repr__(self):
+        return '<Category %r>' % self.name
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
@@ -14,29 +35,21 @@ class User(db.Model):
         return '<User %r>' % self.name
 
 
-class Category(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
-
-    def __init__(self, name):
-        self.name = name
-
-    def __repr__(self):
-        return '<Category %r>' % self.name
-
-
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True)
     articul = db.Column(db.String(50), unique=True)
-    price = db.Column(db.Integer, unique=False)
-    description = db.Column(db.String(500), unique=False)
+    price = db.Column(db.Integer)
+    imageid = db.Column(db.String(30))
+    description = db.Column(db.String(500))
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
-    def __init__(self, name, articul, price, description):
+    def __init__(self, name, articul, price, imageid, description=None):
         self.name = name
         self.articul = articul
         self.price = price
         self.description = description
+        self.imageid = imageid
 
     def __repr__(self):
         return '<Product %r>' % self.name
