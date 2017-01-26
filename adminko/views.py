@@ -7,10 +7,10 @@ def get_user():
     """
         Return User object for current session
     """
-    if 'userid' not in session:
+    if 'userId' not in session:
         return
     user = None
-    user = User.query.get(session['userid'])
+    user = User.query.get(session['userId'])
     # if user is admin then query all categories
     if user.isAdmin:
         categories = Category.query.all()
@@ -18,21 +18,23 @@ def get_user():
     return user
 
 
-def get_categoryid():
+def get_category_id():
     """
         Return current category id for user session
     """
     user = get_user()
     if user:
         categoryId = session.get('categoryId')
-        if not categoryId:
-            if user.categories.count():
-                categoryId = user.categories.first().id
-                session['categoryId'] = categoryId
-        return int(categoryId)
+        if categoryId:
+            return categoryId
+
+        if user.categories.count():
+            categoryId = user.categories.first().id
+            set_category_id(categoryId)
+            return categoryId
 
 
-def set_categoryid(categoryId):
+def set_category_id(categoryId):
     """
         Set current category id for user session
     """
@@ -46,7 +48,7 @@ def valid_login(username, password):
     user = User.query.filter_by(name=username).first()
     auth_success = user and username == password
     if auth_success:
-        session['userid'] = user.id
+        session['userId'] = user.id
     return auth_success
 
 
@@ -66,21 +68,36 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('userid', None)
+    session.pop('userId', None)
     session.pop('categoryId', None)
     return redirect(url_for('index'))
 
 
-@app.route('/')
-@app.route('/category/<categoryId>')
+@app.route('/category')
+@app.route('/category/<int:categoryId>')
 def index(categoryId=None):
     user = get_user()
     # if user already logged in
     if user:
+
         if categoryId:
-            set_categoryid(categoryId)
-        return render_template('index.html', user=user, categoryId=get_categoryid())
+            set_category_id(categoryId)
+            return render_template('index.html', user=user, categoryId=categoryId)
+
+        categoryId = get_category_id()
+        if not categoryId:
+            return redirect(url_for('nocategory'))
+        return redirect(url_for('index', categoryId=categoryId))
+
     return redirect(url_for('login'))
+
+
+@app.route('/nocategory')
+def nocategory():
+    user = get_user()
+
+    if user:
+        return render_template('nocategory.html', user=user)
 
 
 @app.route('/product/new')

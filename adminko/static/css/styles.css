@@ -75,7 +75,7 @@ a:focus, input:focus {
 
 .cnt {
   margin: 0 auto;
-  min-height: 700px;
+  height: 100%;
 }
 
 .cnt-menu {
@@ -209,6 +209,12 @@ a:focus, input:focus {
 .view-selector > a:first-child {	
 	width: 29px;
 	border-right: 1px solid #4c3372;
+}
+
+.view-selector > a:focus {
+	border: 2px solid #30cb00;
+	border-radius: 2px;
+	padding: 3px;
 }
 
 .new-product {

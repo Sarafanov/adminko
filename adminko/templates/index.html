@@ -5,21 +5,16 @@
         <div class="cnt-menu-header">
             <span>Каталог товаров:</span>            
         </div>
-        <div class="cnt-menu-cnt">
-        {% if user.categories.count() %}                        
+        <div class="cnt-menu-cnt">           
             <nav>
-                {% for category in user.categories %}                
-                    {% if category.id == categoryId %}                        
+                {% for category in user.categories %}
+                    {% if category.id == categoryId %}                    
                         <a class="active" href="{{ url_for('index', categoryId=category.id) }}">{{ category.name }}</a>
-                    {% else %}
+                    {% else %}                    
                         <a href="{{ url_for('index', categoryId=category.id) }}">{{ category.name }}</a>
                     {% endif %}
                 {% endfor %}
-            </nav>
-        {% else %}
-            <p>Здесь пусто, поскольку, за Вами еще не закреплено ни одной категории товара.
-                <br>Пожалуйста, обратитесь за помощью к администратору.</p>
-        {% endif %}
+            </nav>        
         </div>
     </div>
 
