@@ -20,7 +20,7 @@
         <h2>dminko</h2> 
         <div class="user-panel">
         {% if user.isAdmin %}
-            <a class="user-panel-settings" href="{{ url_for('admin', categoryId=categoryId) }}" title="Settings">
+            <a class="user-panel-settings" href="{{ url_for('category') }}" title="Settings">
                 <img src="{{ url_for('static', filename='icons/settings.png') }}" title="Settings" />
             </a>
         {% endif %}

@@ -26,12 +26,12 @@ def get_category_id():
     if user:
         categoryId = session.get('categoryId')
         if categoryId:
-            return categoryId
+            return int(categoryId)
 
         if user.categories.count():
             categoryId = user.categories.first().id
             set_category_id(categoryId)
-            return categoryId
+            return int(categoryId)
 
 
 def set_category_id(categoryId):
@@ -73,6 +73,7 @@ def logout():
     return redirect(url_for('login'))
 
 
+@app.route('/')
 @app.route('/category')
 @app.route('/category/<int:categoryId>')
 def index(categoryId=None):
@@ -165,9 +166,39 @@ def delete_product(productId):
     return redirect(url_for('login'))
 
 
-@app.route('/admin/<int:categoryId>')
-def admin():
+@app.route('/admin/category/new', methods=['GET', 'POST'])
+@app.route('/admin/category/<int:categoryId>', methods=['GET', 'POST'])
+def category(categoryId):
     user = get_user()
     if user and user.isAdmin:
-        return render_template('admin.html', user=user, categoryId=categoryId)
+        category = None
+        if not (request.args and request.args['mode']):
+            return redirect(url_for('category', mode=0))
+        mode = int(request.args['mode'])
+        if request.method == 'POST':
+            name = request.form['name']
+            # create mode
+            if mode == 0:
+                category = Category(name)
+                db.session.add(category)
+                db.session.commit()
+                return redirect(url_for('category', categoryId=category.id))
+            # edit mode
+            elif mode == 1 and categoryId:
+                category = Category.query.get(categoryId)
+                category.name = name
+                db.session.add(category)
+                db.session.commit()
+                return redirect(url_for('category', categoryId=category.id))
+            elif mode == 2 and categoryId:
+                category = Category.query.get(categoryId)
+                db.session.delete(category)
+                db.session.commit()
+                categoryId = get_category_id()
+                return redirect(url_for('category', categoryId=categoryId))
+            else:
+                abort(401)
+        if categoryId and mode:
+            category = Category.query.get(categoryId)
+        return render_template('admin-category.html', user=user, fmode=mode, category=category)
     return redirect(url_for('index'))

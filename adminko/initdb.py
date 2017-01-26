@@ -8,16 +8,27 @@ def init_db():
     if app.config.get('initdbcomplete'):
         return
 
+    # create database tables
+    db.create_all()
+
     # Users
     admin = User('admin', True)
     manager1 = User('manager1')
     manager2 = User('manager2')
     manager3 = User('manager3')
+    manager4 = User('manager4')
+    manager5 = User('manager5')
+    manager6 = User('manager6')
+    jonsnow = User('Jon Snow')
 
     db.session.add(admin)
     db.session.add(manager1)
     db.session.add(manager2)
     db.session.add(manager3)
+    db.session.add(manager4)
+    db.session.add(manager5)
+    db.session.add(manager6)
+    db.session.add(jonsnow)
     db.session.commit()
 
     # Products
@@ -94,6 +105,7 @@ def init_db():
 
     stuffed_toys = Category('Мягкие игрушки')
     stuffed_toys.managers.append(manager2)
+    stuffed_toys.managers.append(jonsnow)
 
     db.session.add(wash_machines)
     db.session.add(televisions)

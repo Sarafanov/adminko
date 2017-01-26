@@ -28,3 +28,14 @@ python
 export FLASK_APP=adminko
 export FLASK_DEBUG=true
 flask run
+
+sudo -u postgres createuser ivan
+sudo -u postgres createdb adminko
+
+virtualenv --python=python2.7 .venv
+. .venv/bin/activate
+pip install -e .
+adminko_init_db
+export FLASK_APP=adminko
+export FLASK_DEBUG=true
+flask run

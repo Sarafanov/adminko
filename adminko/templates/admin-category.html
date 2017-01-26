@@ -1,0 +1,41 @@
+{% extends "baselayout.html" %}
+
+{% block body %}
+    <div class="cnt-menu">
+        <div class="cnt-menu-header">
+            <span>Каталог товаров:</span>            
+        </div>
+        <div class="cnt-menu-cnt">           
+            <nav>                
+                {% for pcategory in user.categories %}                                        
+                    <a {% if category and pcategory.id == category.id %}class="active"{% endif %} href="{{ url_for('category', categoryId=pcategory.id) }}">{{ pcategory.name }}</a>
+                    <a style="float:left;" href="{{ url_for('category', categoryId=pcategory.id, mode=1) }}">E</a>
+                    <a style="float:left;" href="{{ url_for('category', categoryId=pcategory.id, mode=2) }}">D</a>
+                {% endfor %}
+                <a href="{{ url_for('category', mode=0) }}">Add Category</a>
+            </nav>        
+        </div>
+    </div>
+
+    <div class="cnt-main">        
+        <form {% if mode %}
+                action="{{ url_for('category', categoryId=category.id, mode=fmode) }}"
+            {% else %}
+                action="{{ url_for('category', mode=fmode) }}"
+            {% endif %} method="POST">
+            <input type="text" name="name" value="{{ category.name }}"></input>
+            <button type="submit">
+                {% if fmode == 0  %}
+                    Добавить
+                {% elif fmode == 1 %}
+                    Редактировать
+                {% else %}
+                    Удалить
+                {% endif %}                
+            </button>
+            <a href="{{ url_for('category') }}">
+                <button type="button">Отмена</button>
+            </a>
+        </form>
+    </div> <!-- cnt-main -->        
+{% endblock body %}
