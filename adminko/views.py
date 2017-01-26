@@ -163,3 +163,11 @@ def delete_product(productId):
             db.session.commit()
             return redirect(url_for('index'))
     return redirect(url_for('login'))
+
+
+@app.route('/admin/<int:categoryId>')
+def admin():
+    user = get_user()
+    if user and user.isAdmin:
+        return render_template('admin.html', user=user, categoryId=categoryId)
+    return redirect(url_for('index'))

@@ -1,0 +1,24 @@
+{% extends "baselayout.html" %}
+
+{% block body %}
+    <div class="cnt-menu">
+        <div class="cnt-menu-header">
+            <span>Каталог товаров:</span>            
+        </div>
+        <div class="cnt-menu-cnt">           
+            <nav>
+                {% for category in user.categories %}
+                    {% if category.id == categoryId %}                    
+                        <a class="active" href="{{ url_for('admin', categoryId=category.id) }}">{{ category.name }}</a>
+                    {% else %}                    
+                        <a href="{{ url_for('admin', categoryId=category.id) }}">{{ category.name }}</a>
+                    {% endif %}
+                {% endfor %}
+            </nav>        
+        </div>
+    </div>
+
+    <div class="cnt-main">
+        <p> Категория:  </p>
+    </div> <!-- cnt-main -->        
+{% endblock body %}
