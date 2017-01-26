@@ -1,0 +1,34 @@
+{% extends "viewlayout.html" %}
+
+{% block view %}   
+    <script>
+        document.getElementById('gridBtn').className = "active";
+    </script>
+
+    {% for product in user.categories.filter_by(id=categoryId).first().products %}                        
+        <div class="product-box">
+            <div class="product-box-img">            
+                <div class="product-box-toolbar">
+                    <a href="{{ url_for('product', productId=product.id) }}" title="Редактировать">
+                        <img src="{{ url_for('static', filename='icons/edit.png') }}">
+                    </a>
+                    <a href="{{ url_for('delete_product', productId=product.id) }}" title="Удалить">
+                        <img src="{{ url_for('static', filename='icons/remove.png') }}">
+                    </a>
+                </div>
+                <img src="{{ url_for('static', filename='images/' + product.imageid + '.jpg') }}" alt="{{ product.name }}"/>
+            </div>
+            <div class="product-box-dsc">
+                <a href="{{ url_for('product_info', productId=product.id) }}" title="{{ product.name }}">
+                    <span>{{ product.name }}</span>
+                </a>                        
+                <dl>
+                    <dt>Артикул: </dt>
+                    <dd>{{ product.articul }}</dd>
+                    <dt>Цена:</dt>
+                    <dd>{{ product.price }} руб.</dd>
+                </dl>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock view %}

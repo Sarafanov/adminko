@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>@dminko — Административная утилита для управления каталогом продуктов магазина</title>
+
+    <!-- stylesheets -->
+    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+    
+    {% block head %}{% endblock %}    
+</head>
+
+<body>
+    <header class="header">
+        <h2 id="doggy">@</h2>
+        <h2>dminko</h2> 
+        <div class="user-panel">
+        {% if user.isAdmin %}
+            <a class="user-panel-settings" href=# title="Settings">
+                <img src="{{ url_for('static', filename='icons/settings.png') }}" title="Settings" />
+            </a>
+        {% endif %}
+            <span class="user-panel-title" title="Удачного дня!">{{ user.name }}</span>
+            <a class="user-panel-logout" href="{{ url_for('logout') }}" title="Выход">
+                <img src="{{ url_for('static', filename='icons/logout.png') }}" title="Выход" />
+            </a>
+        </div>                       
+    </header>
+
+    <div class="cnt">
+        {% block body %} {% endblock %}
+    </div>
+
+    <footer class="footer">        
+        <span>Ivan Sarafanov, 2017</span>
+    </footer>
+</body>
+
+</html>

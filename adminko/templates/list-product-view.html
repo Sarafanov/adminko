@@ -1,0 +1,34 @@
+{% extends "viewlayout.html" %}
+
+{% block view %}
+    <script>
+        document.getElementById('listBtn').className = "active";
+    </script>
+
+    {% for product in user.categories.filter_by(id=categoryId).first().products %}                        
+        <div class="product-box-2">
+            <div class="product-box-2-toolbar">
+                <a href="{{ url_for('product', productId=product.id) }}" title="Редактировать">
+                    <img src="{{ url_for('static', filename='icons/edit.png') }}">
+                </a>
+                <a href="{{ url_for('delete_product', productId=product.id) }}" title="Удалить">
+                    <img src="{{ url_for('static', filename='icons/remove.png') }}">
+                </a>
+            </div>
+            <div class="product-box-2-img">            
+                <img src="{{ url_for('static', filename='images/' + product.imageid + '.jpg') }}" alt="{{ product.name }}"/>                
+            </div>
+            <div class="product-box-2-dsc">
+                <a href="{{ url_for('product_info', productId=product.id) }}" title="{{ product.name }}">
+                    <span>{{ product.name }}</span>
+                </a>
+                <span>{{ product.price }} руб.</span>
+                <br>
+                <br>
+                <span>Артикул: {{ product.articul }}</span>
+                <br>                
+                <span>Описание: {{ product.description }}</span>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock view %}
