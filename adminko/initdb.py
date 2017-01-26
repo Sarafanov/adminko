@@ -47,6 +47,12 @@ def init_db():
                    15741, 'id918810919855937918')
     db.session.commit()
 
+    tv1 = Product('Samsung UE32J4000AU', 'AE-560971',
+                  13999, 'id6314529007079089834')
+    tv2 = Product('LG 43UH619V', 'AE-168471', 29592, 'id8279025169773608082')
+    tv3 = Product('49UH610V', 'AE-128001', 35590, 'id1598414745373504426')
+    db.session.commit()
+
     # Categories
     wash_machines = Category('Стиральные машины')
     wash_machines.managers.append(manager1)
@@ -68,6 +74,9 @@ def init_db():
 
     televisions = Category('Телевизоры')
     televisions.managers.append(manager3)
+    televisions.products.append(tv1)
+    televisions.products.append(tv2)
+    televisions.products.append(tv3)
 
     notebooks = Category('Ноутбуки')
     notebooks.managers.append(manager2)
