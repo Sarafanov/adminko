@@ -48,8 +48,8 @@ class Product(db.Model):
         self.name = name
         self.articul = articul
         self.price = price
-        self.description = description
         self.imageid = imageid
+        self.description = description
 
     def __repr__(self):
         return '<Product %r>' % self.name

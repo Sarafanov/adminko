@@ -1,22 +1,42 @@
-{% extends "layout.html" %}
+{% extends "baselayout.html" %}
+
+{% block head %}
+    <script src="{{ url_for('static', filename='js/utilities.js') }}" type="text/javascript"></script>
+{% endblock head %}
 
 {% block body %}
-    <form class="product-info" action="#" method="POST">
-        <span class="product-info-cat">Категория: Стиральные машины</span>
-        <img src="{{ url_for('static', filename='images/' + product.imageid + '.jpg') }}" alt="{{ product.name }}" />
+    <form class="product-info" enctype="multipart/form-data" action="{{ url_for('product') }}" method="POST">
+        <span class="product-info-cat">Категория: {{ product.category.name }}</span>
+        
+        <div class="product-info-img">
+            <input style="display:none;" name="img_file" id="imgInp" type="file" onchange="readURL(this); document.getElementById('noImgPreview').style.display='none'; document.getElementById('imgPreview').style.display='block';" />
+            {% if product.imageid %}
+                <img id="imgPreview" onclick="document.getElementById('imgInp').click();" src="{{ url_for('static', filename='images/' + product.imageid + '.jpg') }}" alt="{{ product.name }}"/>
+            {% else %}
+                <img style="display:none;" id="imgPreview" onclick="document.getElementById('imgInp').click();" src="#" />
+                <span id="noImgPreview" onclick="document.getElementById('imgInp').click();">
+                    Выберите изображение для товара
+                </span>
+            {% endif %}
+        </div>        
+        
         <dl>
             <dt>Наименование</dt>
-            <dd><input type="text" name="name" title="Наименование" value="{{ product.name }}" /></dd>
+            <dd><input type="text" name="name" title="Наименование" value="{{ product.name }}" {% if isView %}readonly="readonly"{% endif %} /></dd>
             <dt>Артикул</dt>
-            <dd><input type="text" name="articul" title="Артикул" value="{{ product.articul }}" /></dd>
+            <dd><input type="text" name="articul" title="Артикул" value="{{ product.articul }}" {% if isView %}readonly="readonly"{% endif %} /></dd>
             <dt>Цена</dt>
-            <dd><input type="text" name="price" title="Цена" value="{{ product.price }}" /></dd>
+            <dd><input type="text" name="price" title="Цена" value="{{ product.price }}"  {% if isView %}readonly="readonly"{% endif %} /></dd>
             <dt>Описание</dt>
-            <dd><textarea rows="5" cols="50" title="Описание">{{ product.description }}</textarea></dd>
+            <dd><textarea rows="5" name="description" cols="50" title="Описание" {% if isView %}readonly="readonly"{% endif %} >{{ product.description }}</textarea></dd>
         </dl>
         <div class="product-info-btn">
-            <button type="submit"  title="Сохранить">Сохранить</button>
-            <a href="{{ url_for('index') }}">Отмена</a>
+            {% if not isView %}
+                <button type="submit">Сохранить</button>
+            {% endif %}
+            <a href="{{ url_for('index') }}">
+                <button type="button">{% if not isView %}Отмена{% else %}Закрыть{% endif %}</button>
+            </a>
         </div>
     </form>
 {% endblock body %}

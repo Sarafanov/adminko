@@ -70,7 +70,7 @@ def login():
 def logout():
     session.pop('userId', None)
     session.pop('categoryId', None)
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 @app.route('/category')
@@ -82,7 +82,10 @@ def index(categoryId=None):
 
         if categoryId:
             set_category_id(categoryId)
-            return render_template('index.html', user=user, categoryId=categoryId)
+            if request.args and int(request.args['vlist']) == 1:
+                return render_template('list-product-view.html', user=user, categoryId=categoryId)
+            else:
+                return render_template('grid-product-view.html', user=user, categoryId=categoryId)
 
         categoryId = get_category_id()
         if not categoryId:
@@ -100,18 +103,52 @@ def nocategory():
         return render_template('nocategory.html', user=user)
 
 
-@app.route('/product/new')
-@app.route('/product/<productId>')
+@app.route('/product/info/<int:productId>')
+def product_info(productId):
+    user = get_user()
+    if user:
+        product = Product.query.get(productId)
+        return render_template('product.html', user=user, product=product, isView=True)
+    return redirect(url_for('login'))
+
+
+@app.route('/product/new', methods=['GET', 'POST'])
+@app.route('/product/<int:productId>', methods=['GET', 'POST'])
 def product(productId=None):
     user = get_user()
     if user:
         product = None
-        if request.method == 'POST':
-            # create product or edit existing product info
-            request.form['name']
-            return redirect(url_for('index'))
         if productId:
             product = Product.query.get(productId)
+        if request.method == 'POST':
+            f = request.files['img_file']
+            f.save(url_for('static', filename="images/123.jpg"))
+
+            # try:
+            #    name = request.form['name']
+            #    articul = request.form['articul']
+            #    price = int(request.form['price'])
+            #    imageId = None
+            #    description = request.form['description']
+            #    if not (name and articul and price):
+
+            # except expression as identifier:
+            #    pass
+
+            if product:
+                product.name = request.form['name']
+                product.articul = request.form['articul']
+                product.price = request.form['price']
+                # product.imageid =
+                product.description = request.form['description']
+                db.session.update(product)
+            # else:
+            #    product = Product(request.form['name'], request.form['articul'], request.form[
+            #                      'price'], None, request.form['description'])
+            #    product.category_id = get_category_id()
+            #    db.session.add(product)
+            # db.session.commit()
+            return redirect(url_for('index'))
         return render_template('product.html', user=user, product=product)
     return redirect(url_for('login'))
 
