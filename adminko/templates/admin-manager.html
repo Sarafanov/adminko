@@ -1,0 +1,45 @@
+{% extends "baselayout.html" %}
+
+{% block body %}
+
+    <div class="cnt-tab-panel">    
+        <a class="inactive-tab" href="{{ url_for('admin_category') }}">Категории</a>
+        <a class="active-tab" href="{{ url_for('admin_manager') }}">Менеджеры</a>
+    </div>
+
+    <div class="cnt-menu">
+        <div class="cnt-menu-header">
+            <span>Каталог товаров:</span>            
+        </div>
+        <div class="cnt-menu-cnt">           
+            <nav>      
+                {% for pcategory in categories %}
+                    <a {% if pcategory.id == category.id %}class="active"{% endif %} href="{{ url_for('admin_manager', categoryId=pcategory.id) }}">{{ pcategory.name }}</a>
+                {% endfor %}
+            </nav>            
+        </div>
+    </div>
+
+    <div class="cnt-main">
+        <form class="data-form" action="{{ url_for('admin_manager', categoryId=category.id) }}" method="POST">
+            {% for manager in category.managers %}
+                <input type="text" name="{{ manager.id }}" value="{{ manager.name }}" disabled="disabled" />
+                <input id="{{ manager.id }}" style="display:none;" type="submit" name="delete" value="{{ manager.id }}">
+                <a class="delete" href="#" onclick="document.getElementById('{{ manager.id }}').click();" title="Удалить: {{ manager.name }}">
+                    <img src="{{ url_for('static', filename='icons/remove.png') }}">
+                </a>
+            {% endfor %}
+            <div class="data-form-button">
+                <select name="add">
+                    {% for manager in user.query.all() %}
+                        {% if not manager.isAdmin %}
+                            <option value="{{ manager.id }}">{{ manager.name }}</option>                    
+                        {% endif %}                    
+                    {% endfor %}
+                </select>
+                <button type="submit">Добавить</button>
+            </div>
+            <div style="clear:both"></div>
+        </form>
+    </div> <!-- cnt-main -->        
+{% endblock body %}

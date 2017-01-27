@@ -4,7 +4,8 @@ from adminko import db
 managers = db.Table('managers',
                     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
                     db.Column('category_id', db.Integer,
-                              db.ForeignKey('category.id'))
+                              db.ForeignKey('category.id')),
+                    db.PrimaryKeyConstraint('user_id', 'category_id')
                     )
 
 

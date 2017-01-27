@@ -166,34 +166,67 @@ def delete_product(productId):
     return redirect(url_for('login'))
 
 
-@app.route('/admin/category/new', methods=['GET', 'POST'])
-@app.route('/admin/category/<int:categoryId>', methods=['GET', 'POST'])
+@app.route('/admin/categories/new', methods=['GET', 'POST'])
+@app.route('/admin/categories/<int:categoryId>', methods=['GET', 'POST'])
 def admin_category(categoryId=None):
     user = get_user()
     if user and user.isAdmin:
         category = None
-        isDelete = request.args and int(request.args['isDelete'])
-
         if request.method == 'POST':
             # create mode
             if not categoryId:
                 name = request.form['name']
                 category = Category(name)
                 db.session.add(category)
-            elif not isDelete:
-                # edit mode
-                name = request.form['name']
-                category = Category.query.get(categoryId)
-                category.name = name
-                db.session.add(category)
             else:
-                # delete mode
-                category = Category.query.get(categoryId)
-                db.session.delete(category)
+                if request.form.get('edit'):
+                    # edit mode
+                    name = request.form['name']
+                    category = Category.query.get(categoryId)
+                    category.name = name
+                    db.session.add(category)
+                else:
+                    # delete mode
+                    category = Category.query.get(categoryId)
+                    db.session.delete(category)
             db.session.commit()
             return redirect(url_for('admin_category'))
 
+        categories = Category.query.all()
         if categoryId:
             category = Category.query.get(categoryId)
-        return render_template('admin-category.html', user=user, category=category, isDelete=isDelete)
+        return render_template('admin-category.html', user=user, categories=categories, category=category)
+    return redirect(url_for('index'))
+
+
+@app.route('/admin/category/managers')
+@app.route('/admin/category/<int:categoryId>/managers', methods=['GET', 'POST'])
+def admin_manager(categoryId=None):
+    user = get_user()
+    if user and user.isAdmin:
+        category = None
+        if categoryId:
+            # Ok. We have product category.
+            category = Category.query.get(categoryId)
+            if request.method == 'POST':
+                if request.form.get('delete'):
+                    managerId = int(request.form.get('delete'))
+                    manager = User.query.get(managerId)
+                    category.managers.remove(manager)
+                    db.session.add(category)
+                else:
+                    managerId = int(request.form['add'])
+                    manager = User.query.get(managerId)
+                    if not manager in category.managers:
+                        category.managers.append(manager)
+                db.session.commit()
+        else:
+            categoryId = get_category_id()
+            if not categoryId:
+                return redirect(url_for('admin_category'))
+
+        categories = Category.query.all()
+        category = Category.query.get(categoryId)
+        return render_template('admin-manager.html', user=user, categories=categories, category=category)
+
     return redirect(url_for('index'))

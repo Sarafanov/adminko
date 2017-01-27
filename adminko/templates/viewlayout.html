@@ -8,11 +8,7 @@
         <div class="cnt-menu-cnt">           
             <nav>
                 {% for category in user.categories %}
-                    {% if category.id == categoryId %}                    
-                        <a class="active" href="{{ url_for('index', categoryId=category.id) }}">{{ category.name }}</a>
-                    {% else %}                    
-                        <a href="{{ url_for('index', categoryId=category.id) }}">{{ category.name }}</a>
-                    {% endif %}
+                    <a {% if category.id == categoryId %}class="active"{% endif %} href="{{ url_for('index', categoryId=category.id) }}">{{ category.name }}</a>
                 {% endfor %}
             </nav>        
         </div>

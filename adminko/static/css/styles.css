@@ -87,13 +87,16 @@ a:focus, input:focus {
 .cnt-menu-header {
 	height: 30px;
 	padding-left: 20px;	
-	padding-top: 5px;
+	margin-top: 5px;
 	margin-bottom: 10px;
 }
 
 .cnt-menu-header > span {
 	color: #4c3372;
 	font-size: 1.1em;
+	float: left;
+	padding-top: 3px;
+	margin-right: 5px;
 }
 
 .cnt-menu-cnt {
@@ -144,6 +147,7 @@ a:focus, input:focus {
 	height: 30px;
 	padding-right: 20px;
 	margin-bottom: 10px;
+	margin-top: 5px;
 }
 
 .search-panel {	
@@ -217,7 +221,8 @@ a:focus, input:focus {
 	padding: 3px;
 }
 
-.new-product {
+.new-product,
+.new-category {
 	float: left;	
 	height: 30px;
 	min-width: 30px;
@@ -225,7 +230,8 @@ a:focus, input:focus {
 	border: 1px solid #4c3372;
 }
 
-.new-product > a {
+.new-product > a,
+.new-category > a {
 	display: block;
 	float: left;
 	height: 28px;
@@ -234,7 +240,8 @@ a:focus, input:focus {
 	padding: 4px;
 }
 
-.new-product > a > img {
+.new-product > a > img,
+.new-category > a > img {
 	height: 20px;
 	width: 20px;
 }
@@ -496,3 +503,64 @@ a:focus, input:focus {
 .product-info-btn {
 	float: right;
 }
+
+.active-tab {
+	color: #f00
+}
+
+.inactive-tab {
+	color: #aaa
+}
+
+.active-tab,
+.inactive-tab {
+	margin-left: 10px;	
+}
+
+.cnt-tab-panel {
+	margin-bottom: 20px;
+}
+
+.data-form {
+	max-width: 450px;
+	border: 1px solid #4c3372;
+	border-radius: 3px;
+	padding: 10px;
+	margin-top: 45px;
+}
+
+.data-form span {
+	padding-top: 3px;
+	margin-right: 5px;
+	float: left;
+}
+
+.data-form input[type="text"] {
+	float: left;
+	margin-bottom: 5px;
+}
+
+.data-form a.delete {
+	display: block;
+	float: left;
+	height: 22px;
+	width: 22px;
+	padding: 3px;
+	margin: 0;
+}
+
+.data-form a > img {	
+	height: 22px;
+	width: 22px;	
+}
+
+.data-form-button {	
+	float:left;
+	margin-top:10px;
+	width: 100%;
+}
+
+.data-form-button > a {	
+	float:right;	
+}
+
