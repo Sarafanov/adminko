@@ -24,7 +24,7 @@ a:focus, input:focus {
 	margin-bottom: 30px;
 }
 
-.header > h2 {	
+.header > a > h2 {	
 	display: inline;
 	color: #4c3372;
 }

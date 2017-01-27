@@ -6,36 +6,56 @@
             <span>Каталог товаров:</span>            
         </div>
         <div class="cnt-menu-cnt">           
-            <nav>                
-                {% for pcategory in user.categories %}                                        
-                    <a {% if category and pcategory.id == category.id %}class="active"{% endif %} href="{{ url_for('category', categoryId=pcategory.id) }}">{{ pcategory.name }}</a>
-                    <a style="float:left;" href="{{ url_for('category', categoryId=pcategory.id, mode=1) }}">E</a>
-                    <a style="float:left;" href="{{ url_for('category', categoryId=pcategory.id, mode=2) }}">D</a>
-                {% endfor %}
-                <a href="{{ url_for('category', mode=0) }}">Add Category</a>
-            </nav>        
+            <nav>      
+                {% for pcategory in user.categories %}                
+                <div style="width:100%;height:30px;margin:10px 0">
+                    <span style="float:left;">{{ pcategory.name }}</span>
+                    <div style="float:right">
+                        <a style="display:block;margin-right:5px;float:left;height:26px;width:26px;padding:2px;" href="{{ url_for('admin_category', categoryId=pcategory.id ) }}">
+                            <img style="height:22px;width:22px;" src="{{ url_for('static', filename='icons/edit.png') }}">
+                        </a>
+                        <a style="display:block;float:left;height:26px;width:26px;padding:2px;" href="{{ url_for('admin_category', categoryId=pcategory.id, isDelete=1) }}">
+                            <img style="height:22px;width:22px;" src="{{ url_for('static', filename='icons/remove.png') }}">
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}            
+            </nav>
+            <a href="{{ url_for('admin_category') }}">Новая категория</a>
         </div>
     </div>
 
-    <div class="cnt-main">        
-        <form {% if mode %}
-                action="{{ url_for('category', categoryId=category.id, mode=fmode) }}"
+    <div class="cnt-main">
+        <form style="width:400px;" {% if not category %}
+                action="{{ url_for('admin_category') }}"
+            {% elif not isDelete %}
+                action="{{ url_for('admin_category', categoryId=category.id) }}"
             {% else %}
-                action="{{ url_for('category', mode=fmode) }}"
+                action="{{ url_for('admin_category', categoryId=category.id, isDelete=1) }}"
             {% endif %} method="POST">
-            <input type="text" name="name" value="{{ category.name }}"></input>
-            <button type="submit">
-                {% if fmode == 0  %}
-                    Добавить
-                {% elif fmode == 1 %}
-                    Редактировать
-                {% else %}
-                    Удалить
-                {% endif %}                
-            </button>
-            <a href="{{ url_for('category') }}">
-                <button type="button">Отмена</button>
-            </a>
+            {% if isDelete %}
+                <p style="text-align:center;">Вы действительно хотите удалить категорию <strong>{{ category.name }}</strong>
+                    и связанные с ней товары?</p>
+            {% else %}                
+                <dl>
+                    <dt>Категория:</dt>
+                    <dd><input type="text" name="name" value="{{ category.name }}"></input></dd>
+                </dl>
+            {% endif %}
+            <div style="float:right">
+                <button type="submit">
+                    {% if not category  %}
+                        Добавить
+                    {% elif not isDelete %}
+                        Редактировать
+                    {% else %}
+                        Удалить
+                    {% endif %}                
+                </button>
+                <a href="{{ url_for('admin_category') }}">
+                    <button type="button">Отмена</button>
+                </a>
+            </div>
         </form>
     </div> <!-- cnt-main -->        
 {% endblock body %}

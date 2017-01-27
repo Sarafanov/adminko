@@ -16,12 +16,14 @@
 
 <body>
     <header class="header">
-        <h2 id="doggy">@</h2>
-        <h2>dminko</h2> 
+        <a style="text-decoration:none;" href="{{ url_for('index') }}">
+            <h2 id="doggy">@</h2>
+            <h2>dminko</h2> 
+        </a>
         <div class="user-panel">
         {% if user.isAdmin %}
-            <a class="user-panel-settings" href="{{ url_for('category') }}" title="Settings">
-                <img src="{{ url_for('static', filename='icons/settings.png') }}" title="Settings" />
+            <a class="user-panel-settings" href="{{ url_for('admin_category') }}" title="Администрирование">
+                <img src="{{ url_for('static', filename='icons/settings.png') }}" title="Администрирование" />
             </a>
         {% endif %}
             <span class="user-panel-title" title="Удачного дня!">{{ user.name }}</span>

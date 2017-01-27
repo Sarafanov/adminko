@@ -168,37 +168,32 @@ def delete_product(productId):
 
 @app.route('/admin/category/new', methods=['GET', 'POST'])
 @app.route('/admin/category/<int:categoryId>', methods=['GET', 'POST'])
-def category(categoryId):
+def admin_category(categoryId=None):
     user = get_user()
     if user and user.isAdmin:
         category = None
-        if not (request.args and request.args['mode']):
-            return redirect(url_for('category', mode=0))
-        mode = int(request.args['mode'])
+        isDelete = request.args and int(request.args['isDelete'])
+
         if request.method == 'POST':
-            name = request.form['name']
             # create mode
-            if mode == 0:
+            if not categoryId:
+                name = request.form['name']
                 category = Category(name)
                 db.session.add(category)
-                db.session.commit()
-                return redirect(url_for('category', categoryId=category.id))
-            # edit mode
-            elif mode == 1 and categoryId:
+            elif not isDelete:
+                # edit mode
+                name = request.form['name']
                 category = Category.query.get(categoryId)
                 category.name = name
                 db.session.add(category)
-                db.session.commit()
-                return redirect(url_for('category', categoryId=category.id))
-            elif mode == 2 and categoryId:
+            else:
+                # delete mode
                 category = Category.query.get(categoryId)
                 db.session.delete(category)
-                db.session.commit()
-                categoryId = get_category_id()
-                return redirect(url_for('category', categoryId=categoryId))
-            else:
-                abort(401)
-        if categoryId and mode:
+            db.session.commit()
+            return redirect(url_for('admin_category'))
+
+        if categoryId:
             category = Category.query.get(categoryId)
-        return render_template('admin-category.html', user=user, fmode=mode, category=category)
+        return render_template('admin-category.html', user=user, category=category, isDelete=isDelete)
     return redirect(url_for('index'))
