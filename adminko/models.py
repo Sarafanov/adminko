@@ -38,7 +38,7 @@ class User(db.Model):
 
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True)
+    name = db.Column(db.String(50))
     articul = db.Column(db.String(50), unique=True)
     price = db.Column(db.Integer)
     imageid = db.Column(db.String(30))
