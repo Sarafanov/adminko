@@ -5,30 +5,39 @@
 {% endblock head %}
 
 {% block body %}
-    <form class="product-info" enctype="multipart/form-data" action="{{ url_for('product') }}" method="POST">
-        <span class="product-info-cat">Категория: {{ product.category.name }}</span>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <form class="product-info" enctype="multipart/form-data"
+        {% if product %}
+            action="{{ url_for('edit_product', categoryId=category.id, productId=product.id) }}"
+        {% else %}
+            action="{{ url_for('new_product', categoryId=category.id) }}"
+        {% endif %}
+         method="POST">
+        <span class="product-info-cat">Категория: {{ category.name }}</span>
         
         <div class="product-info-img">
-            <input style="display:none;" name="img_file" id="imgInp" type="file" onchange="readURL(this); document.getElementById('noImgPreview').style.display='none'; document.getElementById('imgPreview').style.display='block';" />
+            <input style="display:none;" name="img_file" id="imgInp" type="file" accept=".jpg" onchange="readURL(this); document.getElementById('noImgPreview').style.display='none'; document.getElementById('imgPreview').style.display='block';" />            
             {% if product.imageid %}
                 <img id="imgPreview" onclick="document.getElementById('imgInp').click();" src="{{ url_for('static', filename='images/' + product.imageid + '.jpg') }}" alt="{{ product.name }}"/>
             {% else %}
                 <img style="display:none;" id="imgPreview" onclick="document.getElementById('imgInp').click();" src="#" />
                 <span id="noImgPreview" onclick="document.getElementById('imgInp').click();">
-                    Выберите изображение для товара
+                    Выберите изображение для товара<span class="asterisk">*</span>
                 </span>
             {% endif %}
         </div>        
         
         <dl>
-            <dt>Наименование</dt>
-            <dd><input type="text" name="name" title="Наименование" value="{{ product.name }}" {% if isView %}readonly="readonly"{% endif %} /></dd>
-            <dt>Артикул</dt>
-            <dd><input type="text" name="articul" title="Артикул" value="{{ product.articul }}" {% if isView %}readonly="readonly"{% endif %} /></dd>
-            <dt>Цена</dt>
-            <dd><input type="text" name="price" title="Цена" value="{{ product.price }}"  {% if isView %}readonly="readonly"{% endif %} /></dd>
+            <dt>Наименование<span class="asterisk">*</span></dt>
+            <dd><input type="text" name="name" title="Наименование" value="{{ product.name }}" required {% if isView %}readonly="readonly"{% endif %} /></dd>
+            <dt>Артикул<span class="asterisk">*</span></dt>
+            <dd><input type="text" name="articul" title="Артикул" value="{{ product.articul }}" required {% if isView %}readonly="readonly"{% endif %} /></dd>
+            <dt>Цена<span class="asterisk">*</span></dt>
+            <dd><input type="text" name="price" title="Цена" value="{{ product.price }}" required {% if isView %}readonly="readonly"{% endif %} /></dd>
             <dt>Описание</dt>
-            <dd><textarea rows="5" name="description" cols="50" title="Описание" {% if isView %}readonly="readonly"{% endif %} >{{ product.description }}</textarea></dd>
+            <dd><textarea rows="5" name="description" cols="50" title="Описание" {% if isView %}readonly="readonly"{% endif %} >{% if product.description %} {{ product.description }} {% endif %}</textarea></dd>
         </dl>
         <div class="product-info-btn">
             {% if not isView %}
@@ -38,5 +47,6 @@
                 <button type="button">{% if not isView %}Отмена{% else %}Закрыть{% endif %}</button>
             </a>
         </div>
+        <div style="clear:both;"></div>
     </form>
 {% endblock body %}

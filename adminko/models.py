@@ -45,7 +45,7 @@ class Product(db.Model):
     description = db.Column(db.String(500))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
-    def __init__(self, name, articul, price, imageid, description=''):
+    def __init__(self, name, articul, price, imageid, description=None):
         self.name = name
         self.articul = articul
         self.price = price

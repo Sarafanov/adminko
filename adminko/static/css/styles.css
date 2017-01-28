@@ -75,7 +75,7 @@ a:focus, input:focus {
 
 .cnt {
   margin: 0 auto;
-  height: 100%;
+  margin-bottom: 50px;
 }
 
 .cnt-menu {
@@ -538,6 +538,7 @@ a:focus, input:focus {
 .data-form input[type="text"] {
 	float: left;
 	margin-bottom: 5px;
+	clear: left;
 }
 
 .data-form a.delete {
@@ -546,7 +547,7 @@ a:focus, input:focus {
 	height: 22px;
 	width: 22px;
 	padding: 3px;
-	margin: 0;
+	margin-left: 5px;
 }
 
 .data-form a > img {	
@@ -564,3 +565,20 @@ a:focus, input:focus {
 	float:right;	
 }
 
+.asterisk {
+	color: #f00;
+}
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}

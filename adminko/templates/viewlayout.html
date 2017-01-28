@@ -7,27 +7,27 @@
         </div>
         <div class="cnt-menu-cnt">           
             <nav>
-                {% for category in user.categories %}
-                    <a {% if category.id == categoryId %}class="active"{% endif %} href="{{ url_for('index', categoryId=category.id) }}">{{ category.name }}</a>
+                {% for pcategory in categories %}
+                    <a {% if pcategory.id == category.id %}class="active"{% endif %} href="{{ url_for('index', categoryId=pcategory.id) }}">{{ pcategory.name }}</a>
                 {% endfor %}
-            </nav>        
+            </nav>
         </div>
     </div>
 
     <div class="cnt-main">
-        {% if user.categories.count() %}
+        {% if category %}
         <div class="cnt-main-header">
             <div class="new-product">
-                <a href="{{ url_for('product') }}" title="Новый продукт">
+                <a href="{{ url_for('new_product', categoryId=category.id) }}" title="Новый продукт">
                     <img src="{{ url_for('static', filename='icons/new.png') }}" />
                 </a>           
             </div>
-            {% if user.categories.filter_by(id=categoryId).first().products.count() %}
+            {% if category.products.count() %}
             <div class="view-selector">
-                <a id="gridBtn" href="{{ url_for('index', categoryId=categoryId, vlist=0) }}" title="Представление: сетка">
+                <a id="gridBtn" href="{{ url_for('index', categoryId=category.id, vlist=0) }}" title="Представление: сетка">
                     <img src="{{ url_for('static', filename='icons/vgrid.png') }}" />
                 </a>
-                <a id="listBtn" href="{{ url_for('index', categoryId=categoryId, vlist=1) }}" title="Представление: таблица">
+                <a id="listBtn" href="{{ url_for('index', categoryId=category.id, vlist=1) }}" title="Представление: таблица">
                     <img src="{{ url_for('static', filename='icons/vlist.png') }}" />
                 </a>
             </div>

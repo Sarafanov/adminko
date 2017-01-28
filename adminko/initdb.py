@@ -56,13 +56,11 @@ def init_db():
     wm13 = Product('LG F-12B8QD5', 'AL-242642', 22197, 'id1810140280196787509')
     wm14 = Product('Indesit IWUC 4125', 'AL-253085',
                    15741, 'id918810919855937918')
-    db.session.commit()
 
     tv1 = Product('Samsung UE32J4000AU', 'AE-560971',
                   13999, 'id6314529007079089834')
     tv2 = Product('LG 43UH619V', 'AE-168471', 29592, 'id8279025169773608082')
-    tv3 = Product('49UH610V', 'AE-128001', 35590, 'id1598414745373504426')
-    db.session.commit()
+    tv3 = Product('49UH610V', 'AE-128001', 35590, 'id1598414745373504426')    
 
     # Categories
     wash_machines = Category('Стиральные машины')

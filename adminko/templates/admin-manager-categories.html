@@ -1,0 +1,50 @@
+{% extends "baselayout.html" %}
+
+{% block body %}
+
+    <div class="cnt-tab-panel">    
+        <a class="inactive-tab" href="{{ url_for('admin_category') }}">Категории</a>
+        <a class="active-tab" href="#">Менеджеры</a>
+    </div>
+
+    <div class="cnt-menu">
+        <div class="cnt-menu-header">
+            <span>Менеджеры:</span>
+            <div class="new-category">
+                <a href="{{ url_for('admin_category_managers') }}" title="Новая категория">
+                    <img src="{{ url_for('static', filename='icons/view.png') }}" />
+                </a>
+            </div>
+        </div>
+        <div class="cnt-menu-cnt">
+            <nav>      
+                {% for pmanager in managers %}
+                    {% if not pmanager.isAdmin %}
+                        <a {% if pmanager.id == manager.id %}class="active"{% endif %} href="{{ url_for('admin_manager_categories', managerId=pmanager.id) }}">{{ pmanager.name }}</a>
+                    {% endif %}
+                {% endfor %}
+            </nav>            
+        </div>
+    </div>
+
+    <div class="cnt-main">
+        <form class="data-form" action="{{ url_for('admin_manager_categories', managerId=manager.id) }}" method="POST">
+            {% for category in manager.categories %}
+                <input type="text" name="{{ category.id }}" value="{{ category.name }}" disabled="disabled" />
+                <input id="{{ category.id }}" style="display:none;" type="submit" name="delete" value="{{ category.id }}">
+                <a class="delete" href="#" onclick="document.getElementById('{{ category.id }}').click();" title="Удалить: {{ category.name }}">
+                    <img src="{{ url_for('static', filename='icons/remove.png') }}">
+                </a>
+            {% endfor %}
+            <div class="data-form-button">
+                <select name="add">
+                    {% for category in categories %}                        
+                        <option value="{{ category.id }}">{{ category.name }}</option>                                            
+                    {% endfor %}
+                </select>
+                <button type="submit">Добавить</button>
+            </div>
+            <div style="clear:both"></div>
+        </form>
+    </div> <!-- cnt-main -->        
+{% endblock body %}

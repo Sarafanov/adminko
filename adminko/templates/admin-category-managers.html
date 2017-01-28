@@ -4,24 +4,29 @@
 
     <div class="cnt-tab-panel">    
         <a class="inactive-tab" href="{{ url_for('admin_category') }}">Категории</a>
-        <a class="active-tab" href="{{ url_for('admin_manager') }}">Менеджеры</a>
+        <a class="active-tab" href="#">Менеджеры</a>
     </div>
 
     <div class="cnt-menu">
         <div class="cnt-menu-header">
-            <span>Каталог товаров:</span>            
+            <span>Каталог товаров:</span>
+            <div class="new-category">
+                <a href="{{ url_for('admin_manager_categories') }}" title="Новая категория">
+                    <img src="{{ url_for('static', filename='icons/view.png') }}" />
+                </a>
+            </div>
         </div>
         <div class="cnt-menu-cnt">           
             <nav>      
                 {% for pcategory in categories %}
-                    <a {% if pcategory.id == category.id %}class="active"{% endif %} href="{{ url_for('admin_manager', categoryId=pcategory.id) }}">{{ pcategory.name }}</a>
+                    <a {% if pcategory.id == category.id %}class="active"{% endif %} href="{{ url_for('admin_category_managers', categoryId=pcategory.id) }}">{{ pcategory.name }}</a>
                 {% endfor %}
             </nav>            
         </div>
     </div>
 
     <div class="cnt-main">
-        <form class="data-form" action="{{ url_for('admin_manager', categoryId=category.id) }}" method="POST">
+        <form class="data-form" action="{{ url_for('admin_category_managers', categoryId=category.id) }}" method="POST">
             {% for manager in category.managers %}
                 <input type="text" name="{{ manager.id }}" value="{{ manager.name }}" disabled="disabled" />
                 <input id="{{ manager.id }}" style="display:none;" type="submit" name="delete" value="{{ manager.id }}">

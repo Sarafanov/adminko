@@ -1,20 +1,17 @@
+# -*- coding: utf-8 -*-
 from flask import redirect, url_for, request, render_template, session
 from adminko import app, db
 from adminko.models import User, Category, Product
+import os
 
 
 def get_user():
     """
         Return User object for current session
     """
-    if 'userId' not in session:
-        return
     user = None
-    user = User.query.get(session['userId'])
-    # if user is admin then query all categories
-    if user.isAdmin:
-        categories = Category.query.all()
-        user.categories = categories
+    if 'userId' in session:
+        user = User.query.get(session['userId'])
     return user
 
 
@@ -22,16 +19,20 @@ def get_category_id():
     """
         Return current category id for user session
     """
+    categoryId = None
     user = get_user()
     if user:
-        categoryId = session.get('categoryId')
-        if categoryId:
-            return int(categoryId)
-
-        if user.categories.count():
-            categoryId = user.categories.first().id
-            set_category_id(categoryId)
-            return int(categoryId)
+        if 'categoryId' in session:
+            categoryId = int(session['categoryId'])
+        else:
+            if user.isAdmin:
+                categoryId = Category.query.first().id
+                set_category_id(categoryId)
+            else:
+                if user.categories.count():
+                    categoryId = user.categories.first().id
+                    set_category_id(categoryId)
+    return categoryId
 
 
 def set_category_id(categoryId):
@@ -41,27 +42,20 @@ def set_category_id(categoryId):
     session['categoryId'] = categoryId
 
 
-def valid_login(username, password):
-    """
-        Check user credentials. And if ok, store user id into session object.
-    """
-    user = User.query.filter_by(name=username).first()
-    auth_success = user and username == password
-    if auth_success:
-        session['userId'] = user.id
-    return auth_success
-
-
 @app.route('/login/', methods=['POST', 'GET'])
 def login():
     error = None
     if request.method == 'POST':
         # check user input there
-        if valid_login(request.form['username'],
-                       request.form['password']):
-            return redirect(url_for('index'))
-        else:
-            error = 'Invalid user login or password!'
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if username and password:
+            user = User.query.filter_by(name=username).first()
+            if user and user.name == password:
+                session['userId'] = user.id
+                return redirect(url_for('index'))
+            else:
+                error = 'Invalid user login or password!'
     # render login form template
     return render_template('login.html', error=error)
 
@@ -80,13 +74,18 @@ def index(categoryId=None):
     user = get_user()
     # if user already logged in
     if user:
-
         if categoryId:
             set_category_id(categoryId)
-            if request.args and int(request.args['vlist']) == 1:
-                return render_template('list-product-view.html', user=user, categoryId=categoryId)
+            category = Category.query.get(categoryId)
+            categories = None
+            if user.isAdmin:
+                categories = Category.query.all()
             else:
-                return render_template('grid-product-view.html', user=user, categoryId=categoryId)
+                categories = user.categories
+            if request.args and int(request.args['vlist']) == 1:
+                return render_template('list-product-view.html', user=user, category=category, categories=categories)
+            else:
+                return render_template('grid-product-view.html', user=user, category=category, categories=categories)
 
         categoryId = get_category_id()
         if not categoryId:
@@ -99,68 +98,104 @@ def index(categoryId=None):
 @app.route('/nocategory')
 def nocategory():
     user = get_user()
-
     if user:
         return render_template('nocategory.html', user=user)
 
 
-@app.route('/product/info/<int:productId>')
-def product_info(productId):
+@app.route('/category/<int:categoryId>/products/<int:productId>/info')
+def product_info(categoryId, productId):
     user = get_user()
     if user:
+        category = Category.query.get(categoryId)
         product = Product.query.get(productId)
-        return render_template('product.html', user=user, product=product, isView=True)
+        return render_template('product.html', user=user, category=category, product=product, isView=True)
     return redirect(url_for('login'))
 
 
-@app.route('/product/new', methods=['GET', 'POST'])
-@app.route('/product/<int:productId>', methods=['GET', 'POST'])
-def product(productId=None):
+@app.route('/category/<int:categoryId>/products/new', methods=['GET', 'POST'])
+def new_product(categoryId):
     user = get_user()
     if user:
-        product = None
-        if productId:
-            product = Product.query.get(productId)
+        error = None
+        category = Category.query.get(categoryId)
         if request.method == 'POST':
-            f = request.files['img_file']
-            f.save(url_for('static', filename="images/123.jpg"))
+            f = request.files.get('img_file')
+            name = request.form.get('name')
+            articul = request.form.get('articul')
+            price = request.form.get('price')
+            description = request.form.get('description')
+            filename = f.filename
+            # cut file extension
+            imageid = filename[:filename.rfind('.')]
+            # simple form validation
+            if imageid and name and articul and price:
+                # save file in static folder
+                file_path = os.path.abspath(os.path.dirname(
+                    __file__)) + '/static/images/' + filename
+                f.save(file_path)
+                # create new Product object
+                product = Product(name, articul, price, imageid, description)
+                # add product to category and commit transaction
+                category.products.append(product)
+                db.session.add(category)
+                db.session.commit()
+                # redirect to index page
+                return redirect(url_for('index'))
+            else:
+                error = 'Not all required fields are filled!'
 
-            # try:
-            #    name = request.form['name']
-            #    articul = request.form['articul']
-            #    price = int(request.form['price'])
-            #    imageId = None
-            #    description = request.form['description']
-            #    if not (name and articul and price):
-
-            # except expression as identifier:
-            #    pass
-
-            if product:
-                product.name = request.form['name']
-                product.articul = request.form['articul']
-                product.price = request.form['price']
-                # product.imageid =
-                product.description = request.form['description']
-                db.session.update(product)
-            # else:
-            #    product = Product(request.form['name'], request.form['articul'], request.form[
-            #                      'price'], None, request.form['description'])
-            #    product.category_id = get_category_id()
-            #    db.session.add(product)
-            # db.session.commit()
-            return redirect(url_for('index'))
-        return render_template('product.html', user=user, product=product)
+        return render_template('product.html', user=user, category=category, product=None, error=error)
     return redirect(url_for('login'))
 
 
-@app.route('/product/delete/<productId>')
+@app.route('/category/<int:categoryId>/products/<int:productId>/edit', methods=['GET', 'POST'])
+def edit_product(categoryId, productId):
+    user = get_user()
+    if user:
+        category = Category.query.get(categoryId)
+        product = Product.query.get(productId)
+        if request.method == 'POST':
+            f = request.files.get('img_file')
+            name = request.form.get('name')
+            articul = request.form.get('articul')
+            price = request.form.get('price')
+            description = request.form.get('description')
+            if name and articul and price:
+                product.name = name
+                product.articul = articul
+                product.price = price
+                product.description = description
+                if f:
+                    filename = f.filename
+                    imageid = filename[:filename.rfind('.')]
+                    file_path_old = os.path.abspath(os.path.dirname(
+                        __file__)) + '/static/images/' + product.imageid + '.jpg'
+                    file_path_new = os.path.abspath(os.path.dirname(
+                        __file__)) + '/static/images/' + filename
+                    os.remove(file_path_old)
+                    f.save(file_path_new)
+                    product.imageid = imageid
+                category.products.append(product)
+                db.session.add(category)
+                db.session.commit()
+                return redirect(url_for('index'))
+            else:
+                error = 'Not all required fields are filled!'
+
+        return render_template('product.html', user=user, category=category, product=product)
+    return redirect(url_for('login'))
+
+
+@app.route('/products/<int:productId>delete')
 def delete_product(productId):
     user = get_user()
     if user:
         if productId:
             product = Product.query.get(productId)
             db.session.delete(product)
+            file_path = os.path.abspath(os.path.dirname(
+                __file__)) + '/static/images/' + product.imageid + '.jpg'
+            os.remove(file_path)
             db.session.commit()
             return redirect(url_for('index'))
     return redirect(url_for('login'))
@@ -201,7 +236,7 @@ def admin_category(categoryId=None):
 
 @app.route('/admin/category/managers')
 @app.route('/admin/category/<int:categoryId>/managers', methods=['GET', 'POST'])
-def admin_manager(categoryId=None):
+def admin_category_managers(categoryId=None):
     user = get_user()
     if user and user.isAdmin:
         category = None
@@ -210,7 +245,7 @@ def admin_manager(categoryId=None):
             category = Category.query.get(categoryId)
             if request.method == 'POST':
                 if request.form.get('delete'):
-                    managerId = int(request.form.get('delete'))
+                    managerId = int(request.form['delete'])
                     manager = User.query.get(managerId)
                     category.managers.remove(manager)
                     db.session.add(category)
@@ -227,6 +262,39 @@ def admin_manager(categoryId=None):
 
         categories = Category.query.all()
         category = Category.query.get(categoryId)
-        return render_template('admin-manager.html', user=user, categories=categories, category=category)
+        return render_template('admin-category-managers.html', user=user, categories=categories, category=category)
+
+    return redirect(url_for('index'))
+
+
+@app.route('/admin/manager/categories')
+@app.route('/admin/manager/<int:managerId>/categories', methods=['GET', 'POST'])
+def admin_manager_categories(managerId=None):
+    user = get_user()
+    if user and user.isAdmin:
+        manager = None
+        if managerId:
+            # Ok. We have manager.
+            manager = User.query.get(managerId)
+            if request.method == 'POST':
+                if request.form.get('delete'):
+                    categoryId = int(request.form['delete'])
+                    category = Category.query.get(categoryId)
+                    manager.categories.remove(category)
+                    db.session.add(manager)
+                else:
+                    categoryId = int(request.form['add'])
+                    category = Category.query.get(categoryId)
+                    if not category in manager.categories:
+                        manager.categories.append(category)
+                db.session.commit()
+
+        managers = User.query.all()
+        categories = Category.query.all()
+        if managerId:
+            manager = User.query.get(managerId)
+        else:
+            manager = User.query.filter_by(isAdmin=False).first()
+        return render_template('admin-manager-categories.html', user=user, managers=managers, manager=manager, categories=categories)
 
     return redirect(url_for('index'))
