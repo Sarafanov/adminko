@@ -7,7 +7,7 @@
 
 ## Инструкции по инсталляции программного продукта ##
 
-1. Скачиваем с github [zip-пакет](https://github.com/Sarafanov/adminko/archive/adminko-dev.zip).
+1. Скачиваем с github [zip-пакет](https://github.com/Sarafanov/adminko/archive/master.zip).
 
 2. После распаковки архива, запускаем терминал и переходим во вновь созданный каталог.
 
