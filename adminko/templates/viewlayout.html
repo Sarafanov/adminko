@@ -16,14 +16,14 @@
 
     <div class="cnt-main">
         {% if category %}
-        <div class="cnt-main-header">
+        <div class="cnt-main-header">            
             <div class="new-product">
                 <a href="{{ url_for('new_product', categoryId=category.id) }}" title="Новый продукт">
                     <img src="{{ url_for('static', filename='icons/new.png') }}" />
                 </a>           
             </div>
-            {% if category.products.count() %}
-            <div class="view-selector">
+            {% if products %}
+            <div class="view-selector">                
                 <a id="gridBtn" href="{{ url_for('index', categoryId=category.id, vlist=0) }}" title="Представление: сетка">
                     <img src="{{ url_for('static', filename='icons/vgrid.png') }}" />
                 </a>
@@ -31,10 +31,21 @@
                     <img src="{{ url_for('static', filename='icons/vlist.png') }}" />
                 </a>
             </div>
-            <form class="search-panel">
-                <div><input type="text" placeholder="Поиск"></div>
-                <a href="/" type="submit" title="Go"></a>
-            </form>
+            <div class="filter-form">
+                <form action="{{ url_for('index', categoryId=category.id, vlist=vlist) }}", method="POST">
+                    <input type="text" name="name" placeholder="Наменование" value="{{ filters['name'] }}" />
+                    <input type="text" name="articul" placeholder="Артикул" value="{{ filters['articul'] }}" />
+                    <input type="text" name="price-min" placeholder="Цена от" value="{{ filters['price-min'] }}" />
+                    <input type="text" name="price-max" placeholder="Цена до" value="{{ filters['price-max'] }}" />
+                    <div class="filter-form-button">
+                        <a href="#" {% if filters %} class="active" {% endif %} title="Поиск по категории" onclick="document.getElementById('filterBtn').click()">
+                            <img src="{{ url_for('static', filename='icons/filter.png') }}" />
+                            <button id="filterBtn" style="display:none;" type="submit"></button>
+                        </a>
+                    </div>
+                </form>
+            </div>            
+            <div style="clear:both;"></div>
             {% endif %}
         </div>
         <div class="cnt-main-row">

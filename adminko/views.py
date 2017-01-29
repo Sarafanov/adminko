@@ -69,7 +69,7 @@ def logout():
 
 @app.route('/')
 @app.route('/category')
-@app.route('/category/<int:categoryId>')
+@app.route('/category/<int:categoryId>', methods=['GET', 'POST'])
 def index(categoryId=None):
     user = get_user()
     # if user already logged in
@@ -82,10 +82,36 @@ def index(categoryId=None):
                 categories = Category.query.all()
             else:
                 categories = user.categories
+
+            products = category.products
+            filters = None
+            if request.method == 'POST':
+                # user set filter
+                name = request.form.get('name')
+                articul = request.form.get('articul')
+                price_min = request.form.get('price-min')
+                price_max = request.form.get('price-max')
+                if name or articul or price_min or price_max:
+                    filters = dict()
+                if name:                    
+                    filters['name'] = name
+                    products = products.filter(Product.name.like('%' + name + '%'))                
+                if articul:
+                    filters['articul'] = articul
+                    products = products.filter(Product.articul.like('%' + articul + '%'))
+                if price_min:
+                    price_min = int(price_min)
+                    filters['price-min'] = price_min
+                    products = products.filter(Product.price >= price_min)
+                if price_max:
+                    price_max = int(price_max)
+                    filters['price-max'] = price_max
+                    products = products.filter(Product.price <= price_max)
+
             if request.args and int(request.args['vlist']) == 1:
-                return render_template('list-product-view.html', user=user, category=category, categories=categories)
+                return render_template('list-product-view.html', user=user, categories=categories, category=category, products=products, filters=filters, vlist=1)
             else:
-                return render_template('grid-product-view.html', user=user, category=category, categories=categories)
+                return render_template('grid-product-view.html', user=user, categories=categories, category=category, products=products, filters=filters, vlist=0)
 
         categoryId = get_category_id()
         if not categoryId:

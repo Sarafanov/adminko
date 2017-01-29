@@ -5,7 +5,7 @@
         document.getElementById('listBtn').className = "active";
     </script>
 
-    {% for product in category.products %}                        
+    {% for product in products %}                        
         <div class="product-box-2">
             <div class="product-box-2-toolbar">
                 <a href="{{ url_for('edit_product', categoryId=category.id, productId=product.id) }}" title="Редактировать">
@@ -26,8 +26,9 @@
                 <br>
                 <br>
                 <span>Артикул: {{ product.articul }}</span>
-                <br>                
-                <span>Описание: {{ product.description }}</span>
+                <br>
+                <br>
+                <span class="dsc">{{ product.description }}</span>
             </div>
         </div>
     {% endfor %}

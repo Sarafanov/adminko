@@ -144,48 +144,54 @@ a:focus, input:focus {
 
 .cnt-main-header {
 	width: 100%;
-	height: 30px;
 	padding-right: 20px;
 	margin-bottom: 10px;
 	margin-top: 5px;
 }
 
-.search-panel {	
+.filter-form {
 	float: right;
-	margin-right: 25px;
-	border: 1px solid #aaa;
-	border-radius: 5px;
-	background-color: #fff;
-	margin-top: 4px;
+	margin-right: 10px;
 }
 
-.search-panel > div {
-	float: left;
-	padding: 0 5px;	
+.filter-form-button {
+	height: 30px;
+	width: 30px;
+	border-radius: 2px;
+	border: 1px solid #4c3372;	
+	float: right;
+	margin-left: 5px;	
 }
 
-.search-panel > div > input {
-	width: 250px;
-	border: none;
-	padding: 0;
-	font-size: 16px;
-	height: 20px;
-	margin-right: 20px;
-	color: #4c3372;
-}
-
-.search-panel > div > input:focus {
-	outline-width: 0;	
-}
-
-.search-panel > a {
+.filter-form-button > a {
+	height: 28px;
+	width: 28px;	
 	display: block;	
-	position: relative;	
-	height: 16px;
-	width: 16px; 		
-	background: url("/icons/search.png") no-repeat;	
-	margin-left: 260px;
-	top: 3px;
+	padding: 4px;	
+}
+
+
+.filter-form-button > a > img {
+	height: 20px;
+	width: 20px;
+}
+
+.filter-form input[name='name'] {
+	width: 210px;
+}
+
+.filter-form input[name='articul'] {
+	width: 120px;
+	margin-right: 10px;
+}
+
+.filter-form input[name='price-min'],
+.filter-form input[name='price-max'] {
+	width: 90px;
+}
+
+.filter-form button {
+	margin-left: 20px;
 }
 
 .view-selector {
@@ -215,7 +221,8 @@ a:focus, input:focus {
 	border-right: 1px solid #4c3372;
 }
 
-.view-selector > a.active {
+.view-selector > a.active,
+.filter-form-button > a.active {
 	border: 2px solid #30cb00;
 	border-radius: 2px;
 	padding: 3px;
@@ -365,6 +372,7 @@ a:focus, input:focus {
 .product-box-2-dsc > a {
 	color: #33c;
 	text-decoration: none;
+	font-size: 14px;
 }
 
 .product-box-dsc > a:hover,
@@ -431,11 +439,12 @@ a:focus, input:focus {
 .product-box-2-img {
 	float: left;
 	height: 180px;
-	margin: 10px 0;
+	width: 160px;
+	margin: 10px auto;
+	text-align: center;
 }
 
-.product-box-2-img > img {
-	display: block;	
+.product-box-2-img > img {	
 	max-width: 150px;
 	max-height: 180px;
 }
@@ -444,7 +453,11 @@ a:focus, input:focus {
 	float: left;
 	padding-top: 10px;
 	margin-left: 10px;
-	height: 100%;
+	height: 100%;	
+}
+
+.product-box-2-dsc > span.dsc {
+	white-space: pre;
 }
 
 .footer {	
