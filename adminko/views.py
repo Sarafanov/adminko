@@ -95,10 +95,10 @@ def index(categoryId=None):
                     filters = dict()
                 if name:                    
                     filters['name'] = name
-                    products = products.filter(Product.name.like('%' + name + '%'))                
+                    products = products.filter(db.func.lower(Product.name).like('%' + db.func.lower(name) + '%'))                
                 if articul:
                     filters['articul'] = articul
-                    products = products.filter(Product.articul.like('%' + articul + '%'))
+                    products = products.filter(db.func.lower(Product.articul).like('%' + db.func.lower(articul) + '%'))
                 if price_min:
                     price_min = int(price_min)
                     filters['price-min'] = price_min

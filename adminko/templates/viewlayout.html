@@ -1,11 +1,15 @@
 {% extends "baselayout.html" %}
 
+{% block head %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/utilities.js') }}"></script>
+{% endblock head %}
+
 {% block body %}
     <div class="cnt-menu">
         <div class="cnt-menu-header">
             <span>Каталог товаров:</span>            
         </div>
-        <div class="cnt-menu-cnt">           
+        <div class="cnt-menu-cnt">
             <nav>
                 {% for pcategory in categories %}
                     <a {% if pcategory.id == category.id %}class="active"{% endif %} href="{{ url_for('index', categoryId=pcategory.id) }}">{{ pcategory.name }}</a>
@@ -33,16 +37,14 @@
             </div>
             <div class="filter-form">
                 <form action="{{ url_for('index', categoryId=category.id, vlist=vlist) }}", method="POST">
-                    <input type="text" name="name" placeholder="Наменование" value="{{ filters['name'] }}" />
-                    <input type="text" name="articul" placeholder="Артикул" value="{{ filters['articul'] }}" />
-                    <input type="text" name="price-min" placeholder="Цена от" value="{{ filters['price-min'] }}" />
-                    <input type="text" name="price-max" placeholder="Цена до" value="{{ filters['price-max'] }}" />
-                    <div class="filter-form-button">
-                        <a href="#" {% if filters %} class="active" {% endif %} title="Поиск по категории" onclick="document.getElementById('filterBtn').click()">
-                            <img src="{{ url_for('static', filename='icons/filter.png') }}" />
-                            <button id="filterBtn" style="display:none;" type="submit"></button>
-                        </a>
-                    </div>
+                    <input type="text" name="name" placeholder="Наменование" value="{{ filters['name'] }}" title="Наменование" />
+                    <input type="text" name="articul" placeholder="Артикул" value="{{ filters['articul'] }}" title="Артикул" />
+                    <input type="text" name="price-min" placeholder="Цена от" value="{{ filters['price-min'] }}" title="Цена от"/>
+                    <input type="text" name="price-max" placeholder="Цена до" value="{{ filters['price-max'] }}" title="Цена до"/>
+                    <a class="filter-form-button" href="#" {% if filters %} class="active" {% endif %} title="Поиск по категории" onclick="document.getElementById('filterBtn').click()">
+                        <img src="{{ url_for('static', filename='icons/filter.png') }}" />
+                        <button id="filterBtn" style="display:none;" type="submit"></button>
+                    </a>
                 </form>
             </div>            
             <div style="clear:both;"></div>

@@ -19,8 +19,8 @@
                 <img src="{{ url_for('static', filename='images/' + product.imageid + '.jpg') }}" alt="{{ product.name }}"/>                
             </div>
             <div class="product-box-2-dsc">
-                <a href="{{ url_for('product_info', categoryId=category.id, productId=product.id) }}" title="{{ product.name }}">
-                    <span>{{ product.name }}</span>
+                <a class="product-box-2-dsc-ref" href="{{ url_for('product_info', categoryId=category.id, productId=product.id) }}" title="{{ product.name }}">
+                    {{ product.name }}
                 </a>
                 <span>{{ product.price }} руб.</span>
                 <br>

@@ -1,6 +1,6 @@
 {% extends "viewlayout.html" %}
 
-{% block view %}   
+{% block view %}
     <script>
         document.getElementById('gridBtn').className = "active";
     </script>
@@ -19,9 +19,7 @@
                 <img src="{{ url_for('static', filename='images/' + product.imageid + '.jpg') }}" alt="{{ product.name }}"/>
             </div>
             <div class="product-box-dsc">
-                <a href="{{ url_for('product_info', categoryId=category.id, productId=product.id) }}" title="{{ product.name }}">
-                    <span>{{ product.name }}</span>
-                </a>                        
+                <a class="product-box-dsc-ref" href="{{ url_for('product_info', categoryId=category.id, productId=product.id) }}" title="{{ product.name }}">{{ product.name }}</a>
                 <dl>
                     <dt>Артикул: </dt>
                     <dd>{{ product.articul }}</dd>
