@@ -41,15 +41,13 @@ class Product(db.Model):
     name = db.Column(db.String(50))
     articul = db.Column(db.String(50), unique=True)
     price = db.Column(db.Integer)
-    imageid = db.Column(db.String(30))
     description = db.Column(db.String(500))
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
-    def __init__(self, name, articul, price, imageid, description=None):
+    def __init__(self, name, articul, price, description=None):
         self.name = name
         self.articul = articul
         self.price = price
-        self.imageid = imageid
         self.description = description
 
     def __repr__(self):

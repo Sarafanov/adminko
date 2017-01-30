@@ -19,8 +19,8 @@
         
         <div class="product-info-img">
             <input style="display:none;" name="img_file" id="imgInp" type="file" accept=".jpg" onchange="readURL(this); document.getElementById('noImgPreview').style.display='none'; document.getElementById('imgPreview').style.display='block';" />            
-            {% if product.imageid %}
-                <img id="imgPreview" onclick="document.getElementById('imgInp').click();" src="{{ url_for('static', filename='images/' + product.imageid + '.jpg') }}" alt="{{ product.name }}"/>
+            {% if product %}
+                <img id="imgPreview" onclick="document.getElementById('imgInp').click();" src="{{ url_for('static', filename='images/' + product.id|string + '.jpg') }}" alt="{{ product.name }}"/>
             {% else %}
                 <img style="display:none;" id="imgPreview" onclick="document.getElementById('imgInp').click();" src="#" />
                 <span id="noImgPreview" onclick="document.getElementById('imgInp').click();">

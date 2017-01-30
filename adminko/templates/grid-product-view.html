@@ -16,7 +16,7 @@
                         <img src="{{ url_for('static', filename='icons/remove.png') }}">
                     </a>
                 </div>
-                <img src="{{ url_for('static', filename='images/' + product.imageid + '.jpg') }}" alt="{{ product.name }}"/>
+                <img src="{{ url_for('static', filename='images/' + product.id|string + '.jpg') }}" alt="{{ product.name }}"/>
             </div>
             <div class="product-box-dsc">
                 <a class="product-box-dsc-ref" href="{{ url_for('product_info', categoryId=category.id, productId=product.id) }}" title="{{ product.name }}">{{ product.name }}</a>

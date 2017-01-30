@@ -149,22 +149,19 @@ def new_product(categoryId):
             name = request.form.get('name')
             articul = request.form.get('articul')
             price = request.form.get('price')
-            description = request.form.get('description')
-            filename = f.filename
-            # cut file extension
-            imageid = filename[:filename.rfind('.')]
+            description = request.form.get('description')            
             # simple form validation
-            if imageid and name and articul and price:
-                # save file in static folder
-                file_path = os.path.abspath(os.path.dirname(
-                    __file__)) + '/static/images/' + filename
-                f.save(file_path)
+            if name and articul and price:
                 # create new Product object
-                product = Product(name, articul, price, imageid, description)
+                product = Product(name, articul, price, description)                
                 # add product to category and commit transaction
                 category.products.append(product)
                 db.session.add(category)
                 db.session.commit()
+                # save file in static folder
+                file_path = os.path.abspath(os.path.dirname(
+                    __file__)) + '/static/images/' + str(product.id) + '.jpg'
+                f.save(file_path)                
                 # redirect to index page
                 return redirect(url_for('index'))
             else:
@@ -192,15 +189,11 @@ def edit_product(categoryId, productId):
                 product.price = price
                 product.description = description
                 if f:
-                    filename = f.filename
-                    imageid = filename[:filename.rfind('.')]
-                    file_path_old = os.path.abspath(os.path.dirname(
-                        __file__)) + '/static/images/' + product.imageid + '.jpg'
-                    file_path_new = os.path.abspath(os.path.dirname(
-                        __file__)) + '/static/images/' + filename
-                    os.remove(file_path_old)
-                    f.save(file_path_new)
-                    product.imageid = imageid
+                    file_path = os.path.abspath(os.path.dirname(
+                        __file__)) + '/static/images/' + str(product.id) + '.jpg'
+                    if os.path.isfile(file_path):
+                        os.remove(file_path)    
+                    f.save(file_path)
                 category.products.append(product)
                 db.session.add(category)
                 db.session.commit()
@@ -220,8 +213,9 @@ def delete_product(productId):
             product = Product.query.get(productId)
             db.session.delete(product)
             file_path = os.path.abspath(os.path.dirname(
-                __file__)) + '/static/images/' + product.imageid + '.jpg'
-            os.remove(file_path)
+                __file__)) + '/static/images/' + str(product.id) + '.jpg'
+            if os.path.isfile(file_path):
+                os.remove(file_path)
             db.session.commit()
             return redirect(url_for('index'))
     return redirect(url_for('login'))
